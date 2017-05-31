@@ -18,7 +18,6 @@ competencies: Testing
 ### Preparation
 *Before this lesson, students should already be able to:*
 
-- Describe TDD
 - Explain basic file and folder structure in a simple RESTful node app
 
 ## Intro to Testing
@@ -66,12 +65,12 @@ A development methodology of writing the tests first, then writing the code to m
 
 #### BDD: Behavior-driven development
 
-A development methodology that was derived from `TDD` and `DDD` where tests are written in an English-like language (i.e. the `Gherkin` language) that specifies the external *behavior* (the specifications) of the unit without reference to how the unit was implemented (thus it is a form of *black box* testing). The purpose of BDD is to both describe and test the behavior of a unit of code in a single *specification* file.
+A development methodology that was derived from `TDD` and [`DDD`](https://en.wikipedia.org/wiki/Domain-driven_design) (Domain-driven design) where tests are written in an English-like language (i.e. the `Gherkin` language) that specifies the external *behavior* (the specifications) of the unit without reference to how the unit was implemented (thus it is a form of *black box* testing). The purpose of BDD is to both describe and test the behavior of a unit of code in a single *specification* file.
 
 
 ## Mocha, Chai And Javascript Testing - Intro (10 min)
 
-We've now created several Express applications.  All these apps cover a single topic, so most of the time, they are quite small.  But when you create a larger application, the codebase will become bigger and more complex every time you add some features.  At some point, adding code in file A will break features in file B, and to avoid these "side-effects", we need to test our app.
+We've now created several Express applications.  All these apps cover a single topic, so most of the time, they are quite small.  But when you create a larger application, the codebase will become bigger and more complex every time you add some features. At some point, adding code in file A will break features in file B, and to avoid these "side-effects" or at least recognize immediately when they happen, we need to write tests our app and run them on each change.
 
 To do so in Node, we will use two libraries: one to run the tests and a second one to run the assertions.
 
@@ -91,7 +90,7 @@ To be able to make HTTP requests inside tests, we will use a framework called [S
 
 #### Setting up the app
 
-Take the starter code provided - this is an app we've created when we talked about routing in Express. Be sure to `npm install`.
+Take the starter code provided in the `starter-code` directory of this lesson plan. Take a moment to familiarize yourself with the Express app and get everything set up. Be sure to `npm install` and start the server.
 
 To test this app, we need to install a couple of dependencies.
 
@@ -154,7 +153,7 @@ describe("GET /candies", function(){
 First, we will write a test to make sure that a request to the index path `/candies` returns a http status 200:
 
 ```javascript
-describe("Candies", function(){
+describe("GET /candies", function(){
   it("should return a 200 response", function(done){
     api.get("/candies")
     .set("Accept", "application/json")
@@ -213,10 +212,12 @@ it("should return an array", function(done){
   })
 ```
 
+NB: In the first test, we were using the `.expect` method of `supertest`. Here we are using the expect function provided by `chai`.
+
 We can write another test that verifies the presence of a field in the response:
 
 ```javascript
-it("should return an object that have a field called 'name' ", function(done){
+it("should return an array of objects that have a field called 'name' ", function(done){
   api
     .get("/candies")
     .set("Accept", "application/json")
@@ -275,6 +276,31 @@ it("should add a candy object to the collection candies and return it", function
 
 Run the `mocha` command in the terminal, you should now have four passing tests!
 
+> How many times can you run this test and have it pass? How can you fix this?
+
+## Test running with NPM
+
+We can run out tests using NPM instead of the `mocha` command. To do this, we want to update our test script in `package.json`:
+
+```javascript
+{
+  "name": "express-routing-lab",
+  "version": "0.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    ...
+  }
+  ...
+}
+```
+
+> Why might we want to do this?
+
+One thing to keep in mind when using NPM to run tests (really running anything with NPM scripts for that matter) is that NPM will prefer local node modules over globally installed modules. If something has not been installed properly locally this could lead to [differing behavior](https://stackoverflow.com/a/28666483) between running `mocha` and `npm test`.
 
 ## Independent Practice (20 minutes)
 
