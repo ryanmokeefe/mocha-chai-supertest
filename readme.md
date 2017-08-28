@@ -79,6 +79,13 @@ To be able to make HTTP requests inside tests, we will use [Supertest](https://g
 
 Take the starter code provided in the `starter-code` directory of this lesson plan. Take a moment to familiarize yourself with the Express app and get everything set up. Be sure to `npm install` and start the server.
 
+```bash
+git clone https://github.com/ga-wdi-lessons/mocha-chai-supertest
+cd mocha-chai-supertest/starter-code/app
+npm install
+node app.js
+```
+
 To test this app, we need to install a couple of dependencies.
 
 First, let's install mocha using --save-dev:
@@ -151,10 +158,33 @@ describe("GET /candies", function(){
 
 > **Note:** Make sure that the done is in the it block and not the describe block!
 
-Now go in the command line and type `mocha`, you should get an output looking like :
+Now go in the command line and type `mocha`. When you do, you may get an error saying that the `mocha` command cannot be found. This is because any npm package we want to run from the command line needs to be installed globally. While we could simply install mocha globally and run the test, we would not be using the specified version of mocha listed a dev dependency in our `package.json` and contained in `node_modules`. In order to run mocha from our local `node_modules` folder, we can either:
+
+1. Run mocha directly from our `node_modules` folder:
+    ```bash
+    node_modules/.bin/mocha
+    ```
+2. Alias the `mocha` command to an npm script in our `package.json`:
+    ```javascript
+    {
+      "name": "express-routing-lab",
+      "version": "0.0.0",
+      "description": "",
+      "main": "app.js",
+      "scripts": {
+        "test": "mocha"
+      },
+      "dependencies": {
+        ...
+      }
+      ...
+    }
+    ```
+    > One thing to keep in mind when using NPM to run tests (really running anything with NPM scripts for that matter) is that NPM will prefer local node modules over globally installed modules. If something has not been installed properly locally this could lead to [differing behavior](https://stackoverflow.com/a/28666483) between running `mocha` and `npm test`.
+
+You will know the test successfully ran when if get an output looking like this:
 
 ![CLI Screenshot](http://s2.postimg.org/htp4cex15/Screen_Shot_2015_08_12_at_12_17_01.png)
-
 
 This test is passing!
 
@@ -265,29 +295,6 @@ Run the `mocha` command in the terminal, you should now have four passing tests!
 
 > How many times can you run this test and have it pass? How can you fix this?
 
-### Test running with NPM
-
-We can run out tests using NPM instead of the `mocha` command. To do this, we want to update our test script in `package.json`:
-
-```javascript
-{
-  "name": "express-routing-lab",
-  "version": "0.0.0",
-  "description": "",
-  "main": "app.js",
-  "scripts": {
-    "test": "mocha"
-  },
-  "dependencies": {
-    ...
-  }
-  ...
-}
-```
-
-> Why might we want to do this?
-
-One thing to keep in mind when using NPM to run tests (really running anything with NPM scripts for that matter) is that NPM will prefer local node modules over globally installed modules. If something has not been installed properly locally this could lead to [differing behavior](https://stackoverflow.com/a/28666483) between running `mocha` and `npm test`.
 
 ## Independent Practice (20 minutes)
 
