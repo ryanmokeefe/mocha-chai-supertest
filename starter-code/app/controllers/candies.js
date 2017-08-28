@@ -26,11 +26,13 @@ router.route('/')
   });
 
 // Show a Candy
-router.route('/:id').get(function(req,res){
-
+router.route('/:id')
+  // GET one candy by id
+  .get(function(req,res){
     candy = candies.filter(function(element){ return element["id"] == req.params.id })[0]
     res.json(candy)
   })
+  // DELETE one candy by id
   .delete(function(req, res){
     for(i in candies){
       if(candies[i]["id"] == req.params.id){
@@ -55,4 +57,3 @@ router.put('/:id/edit', function(req, res) {
 
 
 module.exports = router
-
