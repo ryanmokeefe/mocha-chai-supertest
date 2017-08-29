@@ -34,11 +34,8 @@ router.route('/:id')
   })
   // DELETE one candy by id
   .delete(function(req, res){
-    for(i in candies){
-      if(candies[i]["id"] == req.params.id){
-        delete candies[i]
-      }
-    }
+    let candy = candies.find((candy) => candy.id == req.params.id)
+    candies.splice(candies.indexOf(candy), 1)
     res.json({message : 'deleted' });
   });
 
