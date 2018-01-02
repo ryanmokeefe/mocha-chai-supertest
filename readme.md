@@ -59,17 +59,17 @@ A development methodology that was derived from `TDD` and [`DDD`](https://en.wik
 
 To test our code in Node, we will use two primary libraries: one to run the tests and a second one to run the assertions.
 
-Mocha will be our testing framework. From the [Mocha Website](https://mochajs.org/):
+Mocha will be our testing framework, but we're mostly just using it as a test runner. From the [Mocha Website](https://mochajs.org/)...
 
-> "Mocha is a feature-rich JavaScript test framework running on Node.js and the browser, making asynchronous testing simple and fun. Mocha tests run serially, allowing for flexible and accurate reporting, while mapping uncaught exceptions to the correct test cases."
+> "Mocha is a feature-rich JavaScript test framework running on Node.js and the browser, making asynchronous testing simple and fun. Mocha tests run serially, allowing for flexible and accurate reporting, while mapping (associating) uncaught exceptions to the correct test cases."
 
 
-For assertions, we will use Chai. From the [Chai website](http://chaijs.com/):
+For assertions, we will use Chai. From the [Chai website](http://chaijs.com/)...
 
 > "Chai is a BDD / TDD assertion library for node and the browser that can be delightfully paired with any javascript testing framework."
 
 
-To be able to make HTTP requests inside tests, we will use [Supertest](https://github.com/visionmedia/supertest):
+To be able to make HTTP requests inside tests, we will use [Supertest](https://github.com/visionmedia/supertest)...
 
 > "The motivation with this module is to provide a high-level abstraction for testing HTTP"
 
@@ -88,7 +88,7 @@ node app.js
 
 To test this app, we need to install a couple of dependencies.
 
-First, let's install mocha using --save-dev:
+First, let's install mocha using --save-dev...
 
 ```bash
 npm install mocha --save-dev
@@ -100,7 +100,7 @@ Then we will install chai using --save-dev
 npm install chai --save-dev
 ```
 
-Last dependency we need to install is supertest:
+Last dependency we need to install is supertest...
 
 ```bash
 npm install supertest --save-dev
@@ -108,13 +108,13 @@ npm install supertest --save-dev
 
 ### Files and Folders
 
-Now that we're configured, let's set up our file and folder structure. All the tests will be written inside a folder `test` at the root of the app:
+Now that we're configured, let's set up our file and folder structure. All the tests will be written inside a folder `test` at the root of the app...
 
 ```bash
 mkdir test
 ```
 
-Then we will write the tests inside a file called `candies_tests.js`:
+Then we will write the tests inside a file called `candies_tests.js`...
 
 ```bash
 touch test/candies_tests.js
@@ -124,7 +124,7 @@ touch test/candies_tests.js
 
 ### Let's write some tests
 
-Open the file `candies_tests.js`. We now need to require some dependencies at the top of this file:
+Open the file `candies_tests.js`. We now need to require some dependencies at the top of this file...
 
 ```javascript
 var should    = require("chai").should(),
@@ -135,7 +135,7 @@ api           = supertest("http://localhost:3000")
 
 Make sure you set the url correctly, as this will be used to request the app and analyze the response.
 
-All the tests need to be inside a `describe` function.  We will use one describe block per route:
+All the tests need to be inside a `describe` function.  We will use one describe block per route...
 
 ```javascript
 describe("GET /candies", function(){
@@ -144,7 +144,7 @@ describe("GET /candies", function(){
 ```
 
 
-First, we will write a test to make sure that a request to the index path `/candies` returns a http status 200:
+First, we will write a test to make sure that a request to the index path `/candies` returns a http status 200...
 
 ```javascript
 describe("GET /candies", function(){
@@ -158,13 +158,13 @@ describe("GET /candies", function(){
 
 > **Note:** Make sure that the done is in the it block and not the describe block!
 
-Now go in the command line and type `mocha`. When you do, you may get an error saying that the `mocha` command cannot be found. This is because any npm package we want to run from the command line needs to be installed globally. While we could simply install mocha globally and run the test, we would not be using the specified version of mocha listed a dev dependency in our `package.json` and contained in `node_modules`. In order to run mocha from our local `node_modules` folder, we can either:
+Now go in the command line and type `mocha`. When you do, you may get an error saying that the `mocha` command cannot be found. This is because any npm package we want to run from the command line needs to be installed globally. While we could simply install mocha globally and run the test, we would not be using the specified version of mocha listed a dev dependency in our `package.json` and contained in `node_modules`. In order to run mocha from our local `node_modules` folder, we can do one of the following things:
 
-1. Run mocha directly from our `node_modules` folder:
+1. Run mocha directly from our `node_modules` folder...
     ```bash
     node_modules/.bin/mocha
     ```
-2. Alias the `mocha` command to an npm script in our `package.json`:
+2. Alias the `mocha` command to an npm script in our `package.json`...
     ```javascript
     {
       "name": "express-routing-lab",
@@ -182,9 +182,9 @@ Now go in the command line and type `mocha`. When you do, you may get an error s
     ```
     > One thing to keep in mind when using NPM to run tests (really running anything with NPM scripts for that matter) is that NPM will prefer local node modules over globally installed modules. If something has not been installed properly locally this could lead to [differing behavior](https://stackoverflow.com/a/28666483) between running `mocha` and `npm test`.
 
-You will know the test successfully ran when if get an output looking like this:
+You will know the test successfully ran when if get an output looking like this...
 
-![CLI Screenshot](http://s2.postimg.org/htp4cex15/Screen_Shot_2015_08_12_at_12_17_01.png)
+![CLI Screenshot](./images/Screen_Shot_2015_08_12_at_12_17_01.png)
 
 This test is passing!
 
@@ -192,7 +192,7 @@ Every block of code that starts with `it()` represents a test.
 
 The `callback` represents a function that Mocha will pass to the code so that the next test will be executed only when the current is finished and the `done` function is called - this allows tests to be executed once at a time.
 
-Now, let's verify the content of the response by looking at the data sent back by hitting the `/candies` endpoint:
+Now, let's verify the content of the response by looking at the data sent back by hitting the `/candies` endpoint...
 
 ```javascript
 [{
@@ -215,7 +215,7 @@ Now, let's verify the content of the response by looking at the data sent back b
 
 ```
 
-We can write a test that verifies the response is an array:
+We can write a test that verifies the response is an array...
 
 ```javascript
 it("should return an array", function(done){
@@ -231,7 +231,7 @@ it("should return an array", function(done){
 
 NB: In the first test, we were using the `.expect` method of `supertest`. Here we are using the expect function provided by `chai`.
 
-We can write another test that verifies the presence of a field in the response:
+We can write another test that verifies the presence of a field in the response...
 
 ```javascript
 it("should return an array of objects that have a field called 'name' ", function(done){
@@ -247,7 +247,7 @@ it("should return an array of objects that have a field called 'name' ", functio
 
 We can also send data to the server and test the behavior - in our case, we want to make sure that when we post some JSON to `/candies`, a new object is added to the array candies.
 
-Because we are going to test another route, lets add another describe block:
+Because we are going to test another route, lets add another describe block...
 
 ```javascript
 describe("POST /candies", function(){
@@ -262,7 +262,7 @@ For this test, we need to:
 
 For this, we will use `before` blocks. A `before` block will be executed for every `it` function is called inside a `describe` block.
 
-Add this inside the new `describe` block:
+Add this inside the new `describe` block...
 
 ```javascript
   before(function(done){
@@ -278,7 +278,7 @@ Add this inside the new `describe` block:
 
 This code will be called for every test we will add into the current `describe` block.
 
-Now, we can verify that calling "POST" will add an object to candies:
+Now, we can verify that calling "POST" will add an object to candies...
 
 ```javascript
 it("should add a candy object to the collection candies and return it", function(done){
