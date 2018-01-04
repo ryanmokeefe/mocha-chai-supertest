@@ -280,8 +280,8 @@ Add this inside the new `describe` block...
       .post("/candies")
       .set("Accept", "application/json")
       .send({
-       "id": 5,
-       "name": "Lollipop",
+        "id": 5,
+        "name": "Lollipop",
         "color": "Red"
       })
       .end(done)
