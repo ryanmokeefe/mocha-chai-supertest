@@ -122,7 +122,7 @@ touch test/candies_tests.js
 
 > Note: Because our tests will request the application through HTTP, students have to make sure they are running the app while running the tests
 
-### Let's write some tests
+### Writing Our First Test
 
 Open the file `candies_tests.js`. We now need to require some dependencies at the top of this file...
 
@@ -147,20 +147,25 @@ describe("GET /candies", function(){
 First, we will write a test to make sure that a request to the index path `/candies` returns a http status 200...
 
 ```javascript
-describe("GET /candies", function(){
-  it("should return a 200 response", function(done){
-    api.get("/candies")
-    .set("Accept", "application/json")
-    .expect(200, done)
+describe("GET /candies", function () {
+  it("should return a 200 response", function (done) {
+    api
+      .get("/candies")
+      .set("Accept", "application/json")
+      .expect(200, done)
   })
 })
 ```
 
 > **Note:** Make sure that the done is in the it block and not the describe block!
 
-Now go in the command line and type `mocha`. When you do, you may get an error saying that the `mocha` command cannot be found. This is because any npm package we want to run from the command line needs to be installed globally. While we could simply install mocha globally and run the test, we would not be using the specified version of mocha listed a dev dependency in our `package.json` and contained in `node_modules`. In order to run mocha from our local `node_modules` folder, we can do one of the following things:
+Now go in the command line and type `mocha`. When you do, you may get an error saying that the `mocha` command cannot be found. 
 
-1. Run mocha directly from our `node_modules` folder...
+This is because `mocha` is not installed globally on our machines (though it's possible you may have it already installed). While we could simply install mocha globally and run the test, we would not be using the specified version of `mocha` listed a dev dependency in our `package.json` and contained in `node_modules`. 
+
+In order to run mocha from our local `node_modules` folder, do the following...
+
+1. Run mocha directly from our `node_modules` folder to ensure you've installed it properly...
     ```bash
     node_modules/.bin/mocha
     ```
@@ -172,7 +177,7 @@ Now go in the command line and type `mocha`. When you do, you may get an error s
       "description": "",
       "main": "app.js",
       "scripts": {
-        "test": "mocha"
+        "test": "node_modules/.bin/mocha"
       },
       "dependencies": {
         ...
@@ -181,6 +186,7 @@ Now go in the command line and type `mocha`. When you do, you may get an error s
     }
     ```
     > One thing to keep in mind when using NPM to run tests (really running anything with NPM scripts for that matter) is that NPM will prefer local node modules over globally installed modules. If something has not been installed properly locally this could lead to [differing behavior](https://stackoverflow.com/a/28666483) between running `mocha` and `npm test`.
+3. Run `npm test`. Now we can run it locally from our projects without having to install it globally on our machines, and manage another globally installed package.
 
 You will know the test successfully ran when if get an output looking like this...
 
@@ -188,30 +194,34 @@ You will know the test successfully ran when if get an output looking like this.
 
 This test is passing!
 
-Every block of code that starts with `it()` represents a test.
+### Test Blocks
 
-The `callback` represents a function that Mocha will pass to the code so that the next test will be executed only when the current is finished and the `done` function is called - this allows tests to be executed once at a time.
+Every block of code that starts with `it()` represents a test. Each test is performed in sequence, one after the other, in a queue.
+
+The `callback` represents a function that Mocha will pass to the code so that the next test will be executed only when the current is finished and the `done` function is called - this allows tests to be executed once at a time. It's almost like the resolve function of a `Promise`.
 
 Now, let's verify the content of the response by looking at the data sent back by hitting the `/candies` endpoint...
 
 ```javascript
-[{
-    "id": 1,
-    "name": "Chewing Gum",
-    "color": "Red"
-}, {
-    "id": 2,
-    "name": "Pez",
-    "color": "Green"
-}, {
-    "id": 3,
-    "name": "Marshmallow",
-    "color": "Pink"
-}, {
-    "id": 4,
-    "name": "Candy Stick",
-    "color": "Blue"
-}]
+[
+  {
+    id: 1,
+    name: 'Toffee Bar',      
+    color: 'Brown, Caramel'
+  }, {
+    id: 2,
+    name: 'Pez',
+    color: 'Green'
+  }, {
+    id: 3,
+    name: 'Pop Rocks',
+    color: 'Pink'
+  }, {
+    id: 4,
+    name: 'Sour Patch Kids',
+    color: 'Blue'
+  }
+]
 
 ```
 
@@ -266,13 +276,15 @@ Add this inside the new `describe` block...
 
 ```javascript
   before(function(done){
-    api.post("/candies")
-    .set("Accept", "application/json")
-    .send({
-      "id": 5,
-      "name": "Lollipop",
-      "color": "Red"
-    }).end(done)
+    api
+      .post("/candies")
+      .set("Accept", "application/json")
+      .send({
+       "id": 5,
+       "name": "Lollipop",
+        "color": "Red"
+      })
+      .end(done)
   })
 ```
 
@@ -281,17 +293,18 @@ This code will be called for every test we will add into the current `describe` 
 Now, we can verify that calling "POST" will add an object to candies...
 
 ```javascript
-it("should add a candy object to the collection candies and return it", function(done){
-  api.get("/candies")
-  .set("Accept", "application/json")
-  .end(function(error, response){
-    expect(response.body.length).to.equal(5);
-    done()
-  })
+it("should add a candy object to the collection candies and return it", function (done) {
+  api
+    .get("/candies")
+    .set("Accept", "application/json")
+    .end(function(error, response){
+      expect(response.body.length).to.equal(5);
+      done()
+    })
 })
 ```
 
-Run the `mocha` command in the terminal, you should now have four passing tests!
+Run `npm test` in your CLI, you should now have four passing tests!
 
 > How many times can you run this test and have it pass? How can you fix this?
 
