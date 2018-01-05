@@ -1,6 +1,6 @@
 const express        = require('express'),
       bodyParser     = require('body-parser'), //parses information from POST
-      methodOverride = require('method-override') //used to fake PUT and DELETE requests
+      methodOverride = require('method-override'), //used to fake PUT and DELETE requests
       router         = express.Router()
 
 // Instead of information from the DB, we're going to 

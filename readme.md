@@ -111,26 +111,26 @@ npm install supertest --save-dev
 Now that we're configured, let's set up our file and folder structure. All the tests will be written inside a folder `test` at the root of the app...
 
 ```bash
-mkdir test
+ $ mkdir test
 ```
 
-Then we will write the tests inside a file called `candies_tests.js`...
+Then we will write the tests inside a file called `candies.test.js`...
 
 ```bash
-touch test/candies_tests.js
+ $ touch test/candies.test.js
 ```
 
 > Note: Because our tests will request the application through HTTP, students have to make sure they are running the app while running the tests
 
 ### Writing Our First Test
 
-Open the file `candies_tests.js`. We now need to require some dependencies at the top of this file...
+Open the file `candies.test.js`. We now need to require some dependencies at the top of this file...
 
 ```javascript
-var should    = require("chai").should(),
-expect        = require("chai").expect,
-supertest     = require("supertest"),
-api           = supertest("http://localhost:3000")
+const should        = require("chai").should()
+const expect        = require("chai").expect
+const supertest     = require("supertest")
+const api           = supertest("http://localhost:3000")
 ```
 
 Make sure you set the url correctly, as this will be used to request the app and analyze the response.
@@ -138,9 +138,9 @@ Make sure you set the url correctly, as this will be used to request the app and
 All the tests need to be inside a `describe` function.  We will use one describe block per route...
 
 ```javascript
-describe("GET /candies", function(){
+describe("GET /candies", function () {
   //tests will be written inside this function
-});
+})
 ```
 
 
